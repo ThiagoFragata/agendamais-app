@@ -35,6 +35,7 @@
 }
 
 .btn_signin {
+    font-weight: 500;
     font-size: 0.8rem;
     border-radius: 0.5rem;
     margin-top: 2rem;

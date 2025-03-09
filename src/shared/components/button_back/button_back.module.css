@@ -1,0 +1,9 @@
+.btn_container {
+  color: var(--foreground);
+  /* background: transparent; */
+  border: 1px solid var(--foreground);
+  ;
+  width: 3rem;
+  border-radius: 1rem;
+  padding: .5rem;
+}
