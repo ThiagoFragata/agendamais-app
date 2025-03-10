@@ -1,14 +1,26 @@
+'use client'
+import { ButtonDefault } from '@/shared/components/button_default'
 import styles from '@/shared/styles/signIn.module.css'
 import Link from 'next/link'
+import { useRef } from 'react'
 
 export default function SignIn() {
+    const inputRef = useRef<HTMLInputElement | null>(null)
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault() // Evita o comportamento padrão de envio do formulário
+            inputRef.current?.focus() // Move para o próximo campo
+        }
+    }
+
     return (
         <div className={styles.container}>
             <header className={styles.header}>
                 <h3>Comece agora!</h3>
                 <p>
-                    Crie uma conta ou faça login para agendar e gerenciar seus
-                    agendamentos
+                    Crie uma conta ou faça login para agendar e ver suas
+                    reservas.
                 </p>
             </header>
 
@@ -18,10 +30,13 @@ export default function SignIn() {
                         <label htmlFor="email">E-mail</label>
                         <input
                             id="email"
+                            autoCapitalize="none"
                             className={styles.input_item}
                             type="email"
                             placeholder="Digite seu e-mail"
                             required
+                            onKeyDown={handleKeyDown}
+                            enterKeyHint="next"
                         />
                     </div>
 
@@ -29,6 +44,7 @@ export default function SignIn() {
                         <label htmlFor="password">Senha</label>
                         <input
                             id="password"
+                            ref={inputRef}
                             className={styles.input_item}
                             type="password"
                             placeholder="Digite sua senha"
@@ -36,9 +52,11 @@ export default function SignIn() {
                         />
                     </div>
 
-                    <button className={styles.btn_signin} type="submit">
-                        Entrar
-                    </button>
+                    <ButtonDefault
+                        text={'Entrar'}
+                        // isPending={isPending}
+                        type="submit"
+                    />
                 </form>
             </main>
 

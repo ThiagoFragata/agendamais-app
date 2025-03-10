@@ -34,16 +34,6 @@
     border-radius: 0.5rem;
 }
 
-.btn_signin {
-    font-weight: 500;
-    font-size: 0.8rem;
-    border-radius: 0.5rem;
-    margin-top: 2rem;
-    padding: 1rem;
-    background-color: var(--foreground);
-    color: var(--background);
-    border: none;
-}
 
 .footer {
     margin: 1rem auto;
@@ -54,5 +44,5 @@
 }
 
 .footer p a {
-    color: aquamarine;
+    color: dodgerblue;
 }

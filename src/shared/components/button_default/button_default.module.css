@@ -1,0 +1,10 @@
+.btn_signin {
+  font-weight: 500;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: var(--foreground);
+  color: var(--background);
+  border: none;
+}

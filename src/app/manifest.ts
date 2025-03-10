@@ -2,8 +2,8 @@ import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: 'thf. agenda',
-        short_name: 'Agenda+',
+        name: 'Agenda+',
+        short_name: 'Cris Corte',
         description: 'Web App built with Next.js',
         start_url: '/',
         display: 'standalone',
