@@ -1,16 +1,48 @@
 'use client'
+import { api } from '@/services/axios_api'
 import { ButtonDefault } from '@/shared/components/button_default'
+import useToast from '@/shared/hooks/useToast'
 import styles from '@/shared/styles/signIn.module.css'
+import { setCookie } from 'cookies-next/client'
 import Link from 'next/link'
-import { useRef } from 'react'
+import { useRouter } from 'next/navigation'
+import { useRef, useState } from 'react'
 
 export default function SignIn() {
+    const { replace } = useRouter()
     const inputRef = useRef<HTMLInputElement | null>(null)
+    const [payload, setPayload] = useState({
+        email: '',
+        password: '',
+    })
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            e.preventDefault() // Evita o comportamento padrão de envio do formulário
-            inputRef.current?.focus() // Move para o próximo campo
+            e.preventDefault()
+            inputRef.current?.focus()
+        }
+    }
+
+    const { showToast } = useToast()
+
+    const handleSubmitSignIn = async (
+        e: React.MouseEvent<HTMLButtonElement>
+    ) => {
+        e.preventDefault()
+
+        try {
+            const { data } = await api.post<{ access_token: string }>(
+                '/auth/login',
+                payload
+            )
+
+            setCookie('access_token', data.access_token)
+            replace('/customer')
+            showToast('Login realizado com sucesso!', 'normal')
+        } catch (err) {
+            const error = err as { response: { data: { message: string } } }
+            showToast(error.response.data.message, 'error')
+            console.info(error.response.data)
         }
     }
 
@@ -37,6 +69,13 @@ export default function SignIn() {
                             required
                             onKeyDown={handleKeyDown}
                             enterKeyHint="next"
+                            value={payload.email}
+                            onChange={(e) => {
+                                setPayload({
+                                    ...payload,
+                                    email: e.target.value,
+                                })
+                            }}
                         />
                     </div>
 
@@ -49,12 +88,20 @@ export default function SignIn() {
                             type="password"
                             placeholder="Digite sua senha"
                             required
+                            value={payload.password}
+                            onChange={(e) => {
+                                setPayload({
+                                    ...payload,
+                                    password: e.target.value,
+                                })
+                            }}
                         />
                     </div>
 
                     <ButtonDefault
                         text={'Entrar'}
                         // isPending={isPending}
+                        onClick={(e) => handleSubmitSignIn(e)}
                         type="submit"
                     />
                 </form>
