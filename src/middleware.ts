@@ -20,14 +20,13 @@ export default async function middleware(req: NextRequest) {
             return NextResponse.redirect(new URL('/signin', req.url))
         }
 
-        // Verifica e decodifica o token
         const { payload } = await jwtVerify(
             token,
             new TextEncoder().encode(SECRET)
         )
         const role = payload.role as string
 
-        // Se estiver autenticado e tentar acessar login/signup, redireciona para a página correta com alerta
+        // Se estiver autenticado e tentar acessar rotas públicas, redireciona para a página correta com alerta
         if (publicRoutes.includes(path)) {
             let redirectUrl = '/'
 
@@ -41,6 +40,7 @@ export default async function middleware(req: NextRequest) {
 
             return NextResponse.redirect(finalUrl)
         }
+
         // Proteção de rotas baseada na role
         if (protectedRoutes.includes(path)) {
             if (path === '/admin' && role !== 'ADMIN') {
